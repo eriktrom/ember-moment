@@ -22,7 +22,13 @@ export default Helper.extend({
        * for queue to clear.
        */
       this.intervalTimer = setTimeout(() => {
-        run(() => this.recompute());
+        if (window && window.requestIdleCallback) {
+          window.requestIdleCallback(() => {
+            window.requestAnimationFrame(() => run.join(() => this.recompute()));
+          });
+        } else {
+          run(() => this.recompute());
+        }
       }, parseInt(interval, 10));
     }
   },
