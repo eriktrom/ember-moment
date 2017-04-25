@@ -1,9 +1,6 @@
 import Ember from 'ember';
 
-const { observer, inject, get, Helper, run } = Ember;
-
-const hasRequestIdleCallback =
-  (typeof window !== 'undefined' && "requestIdleCallback" in window);
+const { observer, inject, get, Helper } = Ember;
 
 export default Helper.extend({
   moment: inject.service(),
@@ -25,13 +22,7 @@ export default Helper.extend({
        * for queue to clear.
        */
       this.intervalTimer = setTimeout(() => {
-        if (hasRequestIdleCallback) {
-          requestIdleCallback(() => {
-            run(() => this.recompute());
-          });
-        } else {
-          run(() => this.recompute());
-        }
+        this.recompute();
       }, parseInt(interval, 10));
     }
   },
